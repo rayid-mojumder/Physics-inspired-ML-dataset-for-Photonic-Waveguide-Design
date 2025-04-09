@@ -54,8 +54,7 @@ This repository contains a synthetic dataset of 50,000 samples created from phys
 ---
 
 ## ⚙️ Governing Equations
--> See the Jupyter Notebook file
-
+-> See the Jupyter Notebook file (click_here)[https://github.com/rayid-mojumder/Physics-inspired-ML-dataset-for-Photonic-Waveguide-Design/blob/main/data/Governing_Physics_Equations.ipynb]
 ---
 
 
