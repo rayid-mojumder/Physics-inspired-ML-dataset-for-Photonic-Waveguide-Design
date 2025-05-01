@@ -34,78 +34,23 @@ Use this dataset to train data-driven models that predict waveguide performance 
 
 ## 🌟 Output Targets (14 Features)
 
-| Name                            | Description                                                                                                                                                                                                           |
-|---------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `propagation_loss_dB`           | Propagation loss (dB):  
-```latex
-\[ 
-P_{\rm out} = P_{\rm in}\,\exp(-\alpha_{\rm total} L), 
-\quad 
-\mathcal{L}_{\rm prop} = 10\log_{10}\frac{P_{\rm in}}{P_{\rm out}}.
-\]
-```  |
-| `insertion_loss_dB`             | Insertion (coupling) loss (dB) via Gaussian overlap.                                                                                                                                                                 |
-| `coupling_loss_dB`              | Same as insertion loss.                                                                                                                                                                                               |
-| `mode_field_diameter_m`         | Mode field diameter:  
-```latex
-\[
-w = a\Bigl(0.65 + 1.619\,V^{-1.5} + 2.879\,V^{-6}\Bigr),
-\quad
-\mathrm{MFD} = 2w.
-\]
-```  |
-| `mode_confinement_factor`       | Confinement factor Γ:  
-```latex
-\[
-\Gamma = \frac{u^2}{V^2},\quad
-u = 
-\begin{cases}
-0.9\,V, & V<2.405,\\
-V-0.5,   & V\ge2.405.
-\end{cases}
-\]
-```  |
-| `single_mode`                   | `Y` if \(V<2.405\), else `N`.                                                                                                                                                                                         |
-| `multi_mode`                    | Complement of `single_mode`.                                                                                                                                                                                         |
-| `scattering_loss_dB`            | Scattering loss (dB):  
-```latex
-\[
-\alpha_{\rm scatt,bulk} = \frac{8\pi^3}{3\lambda^4}p^2\Bigl(\tfrac{\Delta\rho}{\rho}\Bigr)^2\Gamma,
-\quad
-\alpha_{\rm scatt,surf} = \frac{4\pi^3}{\lambda^2}\sigma^2L_{\rm corr},
-\quad
-\mathcal{L}_{\rm scatt} = 4.343\bigl(\alpha_{\rm scatt,bulk} + \alpha_{\rm scatt,surf}\bigr)L.
-\]
-```  |
-| `effective_index`               | Effective index:  
-```latex
-\[
-n_{\rm eff} = \sqrt{n_{2}^2 + \frac{u^2}{V^2}(n_{1}^2 - n_{2}^2)}.
-\]
-```  |
-| `cross_coupling`                | Cross-coupling:  
-```latex
-\[
-\mathrm{CrossCoupling} = 
-\begin{cases}
-0, & V < 2.405,\\
-\tfrac12\,(V-2.405)/V, & V \ge 2.405.
-\end{cases}
-\]
-```  |
-| `TE_percent`, `TM_percent`      | Mode polarization percentages.                                                                                                                                                                                        |
-| `V_parameter`                   | Normalized frequency:  
-```latex
-\[
-V = \frac{2\pi\,a}{\lambda}\sqrt{n_1^2 - n_2^2}.
-\]
-```  |
-| `output_power`                  | Output power:  
-```latex
-\[
-P_{\rm out} = P_{\rm in}\,\exp(-\alpha_{\rm total}L).
-\]
-```  |
+| Name                            | Description                                                        |
+|---------------------------------|--------------------------------------------------------------------|
+| `propagation_loss_dB`           | Propagation loss (dB)                                              |
+| `insertion_loss_dB`             | Insertion (coupling) loss (dB)                                     |
+| `coupling_loss_dB`              | Same as insertion loss                                             |
+| `mode_field_diameter_m`         | Mode field diameter \(2w\)                                         |
+| `mode_confinement_factor`       | Fraction of power confined in the core \(\Gamma\)                 |
+| `single_mode`                   | `Y` if single-mode (V<2.405), else `N`                            |
+| `multi_mode`                    | Complement of `single_mode`                                        |
+| `scattering_loss_dB`            | Scattering loss (dB)                                              |
+| `effective_index`               | Effective refractive index \(n_{\rm eff}\)                        |
+| `cross_coupling`                | Cross-coupling metric                                             |
+| `TE_percent`, `TM_percent`      | Mode polarization percentages                                     |
+| `V_parameter`                   | Normalized frequency \(V\)                                        |
+| `output_power`                  | Output power \(P_{\rm out}\)                                      |
+
+> **Note:** All detailed equations are listed in the [Key Equations](#key-equations) section below.
 
 ---
 
@@ -113,7 +58,9 @@ P_{\rm out} = P_{\rm in}\,\exp(-\alpha_{\rm total}L).
 
 ```latex
 \[
-V = \frac{2\pi\,a}{\lambda}\sqrt{n_1^2 - n_2^2}
+P_{\rm out} = P_{\rm in}\,\exp(-\alpha_{\rm total} L),
+\quad
+\mathcal{L}_{\rm prop} = 10\log_{10}\frac{P_{\rm in}}{P_{\rm out}}
 \]
 \[
 w = a\Bigl(0.65 + 1.619\,V^{-1.5} + 2.879\,V^{-6}\Bigr),\quad \mathrm{MFD}=2w
@@ -144,6 +91,7 @@ P_{\rm out} = P_{\rm in}\,\exp(-\alpha_{\rm total}L),
 \quad
 \mathcal{L}_{\rm prop} = 10\log_{10}\!\Bigl(\tfrac{P_{\rm in}}{P_{\rm out}}\Bigr)
 \]
+\]
 ```
 
 ---
@@ -151,13 +99,13 @@ P_{\rm out} = P_{\rm in}\,\exp(-\alpha_{\rm total}L),
 ## ⚙️ Data Generation Procedure
 
 1. **Load experimental data**  
-   Read propagation losses and MFDs from the literature table; compute mean & std.  
+   Read propagation losses and MFDs from the literature; compute mean & std.  
 2. **Sample inputs & compute physics**  
-   Uniformly sample inputs; compute \(V\), \(w\), \(\Gamma\), loss coefficients, \(n_{\rm eff}\), polarization, etc.  
+   Uniformly sample inputs; compute parameters \(V\), \(w\), \(\Gamma\), loss coefficients, \(n_{\rm eff}\), polarization, etc.  
 3. **Inject noise**  
    Apply 5\% Gaussian noise to each computed output.  
 4. **Experimental correction**  
-   Tune loss & MFD values to match the experimental mean and standard deviation.  
+   Adjust loss & MFD distributions to match experimental statistics.  
 5. **Persist to CSV**  
    Batch-write 1,000 samples at a time into `final_realistic_synthetic_dataset.csv`.
 
