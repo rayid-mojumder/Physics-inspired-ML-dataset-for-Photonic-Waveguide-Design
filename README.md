@@ -45,4 +45,7 @@ cd Physics-inspired-ML-dataset-for-Photonic-Waveguide-Design
 ```
 ---
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15319336.svg)](https://doi.org/10.5281/zenodo.15319336)
+## 📑 Cite This Dataset!
+
+[![DOI:10.5281/zenodo.15319336](https://zenodo.org/badge/DOI/10.5281/zenodo.15319336.svg)](https://doi.org/10.5281/zenodo.15319336)
+
