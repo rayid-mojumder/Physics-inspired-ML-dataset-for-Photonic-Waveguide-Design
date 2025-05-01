@@ -42,6 +42,7 @@ We’re excited to unveil **v1.0.0** of [Physics-inspired-ML-dataset-for-Photoni
 ```bash
 git clone https://github.com/rayid-mojumder/Physics-inspired-ML-dataset-for-Photonic-Waveguide-Design.git
 cd Physics-inspired-ML-dataset-for-Photonic-Waveguide-Design
-
+```
+---
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15319336.svg)](https://doi.org/10.5281/zenodo.15319336)
