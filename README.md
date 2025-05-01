@@ -56,35 +56,37 @@ Use this dataset to train data-driven models that predict waveguide performance 
 
 ## 🧮 Key Equations
 
-## 🧮 Key Equations
-
 1. **Normalized Frequency**  
 $$
-V \;=\;\frac{2\pi\,a}{\lambda}\,\sqrt{n_{\mathrm{core,real}}^2 - n_{\mathrm{clad,real}}^2}
+V = \frac{2\pi\,a}{\lambda}\,\sqrt{n_{\mathrm{core,real}}^2 - n_{\mathrm{clad,real}}^2}
 $$
 
 2. **Mode Field Diameter**  
 $$
-w \;=\; a\Bigl(0.65 + 1.619\,V^{-1.5} + 2.879\,V^{-6}\Bigr)
+w = a\Bigl(0.65 + 1.619\,V^{-1.5} + 2.879\,V^{-6}\Bigr)
 $$  
+and  
 $$
-\mathrm{MFD} \;=\; 2\,w
+\mathrm{MFD} = 2w
 $$
 
 3. **Mode Confinement Factor**  
+First compute  
 $$
 u = 
 \begin{cases}
-0.9\,V, & V<2.405,\\[6pt]
-V - 0.5, & V\ge2.405,
+0.9\,V, & V < 2.405,\\
+V - 0.5, & V \ge 2.405,
 \end{cases}
-\quad
-\Gamma = \frac{u^2}{V^2}
+$$  
+then  
+$$
+\Gamma = \frac{u^2}{V^2}.
 $$
 
-4. **Effective Attenuation**  
+4. **Intrinsic (Effective) Attenuation**  
 $$
-\alpha_{\rm eff} \;=\; \alpha_{\rm core}\,\Gamma \;+\; \alpha_{\rm clad}\,(1-\Gamma)
+\alpha_{\rm eff} = \alpha_{\rm core}\,\Gamma + \alpha_{\rm clad}\,(1-\Gamma)
 $$
 
 5. **Scattering Loss Coefficients**  
@@ -113,26 +115,27 @@ $$
 8. **Propagation Loss (dB)**  
 $$
 \mathcal{L}_{\rm prop}
-= 10\,\log_{10}\!\frac{P_{\rm in}}{P_{\rm out}}
+= 10\,\log_{10}\!\bigl(\tfrac{P_{\rm in}}{P_{\rm out}}\bigr)
 $$
 
 9. **Gaussian Overlap & Insertion/Coupling Loss**  
-Let \(\Delta x\sim\mathcal U(0,2w)\), then  
+Let $\Delta x\sim\mathcal{U}(0,2w)$. Then
 $$
 T_{\rm nom}
 = \frac{2\,w_{\rm in}\,w}{w_{\rm in}^2 + w^2}
-  \exp\!\Bigl(-\tfrac{\Delta x^2}{w_{\rm in}^2 + w^2}\Bigr),
+  \exp\!\bigl(-\tfrac{\Delta x^2}{w_{\rm in}^2 + w^2}\bigr),
 \quad
-T_{\rm nom}\ge10^{-12}
+T_{\rm nom}\ge10^{-12}.
 $$  
+Coupling loss:
 $$
 \mathrm{IL}_{\rm dB}
 = -20\,\log_{10}(T_{\rm nom}),
 \quad
-\mathrm{CL}_{\rm dB} = \mathrm{IL}_{\rm dB}
+\mathrm{CL}_{\rm dB} = \mathrm{IL}_{\rm dB}.
 $$
 
-10. **Effective Index**  
+10. **Effective Refractive Index**  
 $$
 n_{\rm eff}
 = \sqrt{\,n_{\rm clad,real}^2 \;+\;\tfrac{u^2}{V^2}\,(n_{\rm core,real}^2 - n_{\rm clad,real}^2)\,}
@@ -142,41 +145,40 @@ $$
 $$
 \mathrm{CrossCoupling} =
 \begin{cases}
-0, & V<2.405,\\[3pt]
-\tfrac12\,\frac{(V-2.405)}{V}, & V\ge2.405
+0, & V<2.405,\\[4pt]
+\tfrac12\,\frac{V - 2.405}{V}, & V\ge2.405.
 \end{cases}
 $$
 
 12. **Polarization Percentages**  
-For \(V<2.405\):  
+For $V<2.405$:
 $$
 \mathrm{TE}\% = (1 - p_{\rm pol})\times100,
 \quad
-\mathrm{TM}\% = p_{\rm pol}\times100
+\mathrm{TM}\% = p_{\rm pol}\times100.
 $$  
-Else:  
+For $V\ge2.405$:
 $$
 \mathrm{TE}\% = \bigl((1-p_{\rm pol})(1-C) + 0.5\,C\bigr)\times100,
 \quad
-\mathrm{TM}\% = \bigl(p_{\rm pol}(1-C) + 0.5\,C\bigr)\times100
+\mathrm{TM}\% = \bigl(p_{\rm pol}(1-C) + 0.5\,C\bigr)\times100.
 $$
 
 13. **Noise Injection**  
-For any quantity \(x\):  
+For any computed value $x$:
 $$
-\eta \sim \mathcal{N}\bigl(0,(\tfrac{\text{noise}\%}{100})^2\bigr),
+\eta \sim \mathcal{N}\Bigl(0,\bigl(\tfrac{\text{noise}\%}{100}\bigr)^2\Bigr),
 \quad
-x' = x\,(1+\eta)
+x' = x\,(1 + \eta).
 $$
 
 14. **Clamping / Experimental Correction**  
-\[
-\begin{gathered}
-\mathcal{L}_{\rm prop} \ge 0.1,\quad 
-\mathrm{IL}_{\rm dB},\,\mathrm{CL}_{\rm dB},\,\mathrm{scattering\_loss\_dB}\ge0,\\
-P_{\rm out}\ge10^{-20}\,\mathrm{W}.
-\end{gathered}
-\]
+Ensure non-negative losses and powers:
+$$
+\mathcal{L}_{\rm prop} \ge 0.1,\;
+\mathrm{IL}_{\rm dB},\;\mathrm{CL}_{\rm dB},\;\mathrm{scattering\_loss\_dB}\ge0,\;
+P_{\rm out} \ge 10^{-20}\,\mathrm{W}.
+$$
 
 ---
 
